@@ -37,20 +37,22 @@ class InfoCubit extends Cubit<InfoState> {
   }
 
   Future<void> submitForm() async {
-    if (!state.status.isValidated) return;
-    emit(state.copyWith(status: FormzStatus.submissionInProgress));
-    try {
-      final user = User(
-          firstName: state.firstName,
-          lastName: state.lastName,
-          email: state.email.value,
-          phoneNumber: state.phoneNumber.value);
-
-      // await _authenticationRepository.signup(
-      //     user: mockUser, password: state.password.value, image: state.image);
-      emit(state.copyWith(status: FormzStatus.submissionSuccess));
-    } catch (e) {
+    if (!state.status.isValidated) {
       emit(state.copyWith(status: FormzStatus.submissionFailure));
+      return;
     }
+
+    emit(state.copyWith(status: FormzStatus.submissionInProgress));
+
+    // final user = User(
+    //     firstName: state.firstName,
+    //     lastName: state.lastName,
+    //     email: state.email.value,
+    //     phoneNumber: state.phoneNumber.value);
+
+    /// A simulated network request delay
+    await Future<void>.delayed(const Duration(seconds: 2));
+
+    emit(state.copyWith(status: FormzStatus.submissionSuccess));
   }
 }

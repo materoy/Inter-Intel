@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inter_intel_interview/app/utils/size_config.dart';
 import 'package:inter_intel_interview/info/info.dart';
 
 class DesignScreen extends StatelessWidget {
@@ -10,16 +11,27 @@ class DesignScreen extends StatelessWidget {
     Navigator.push(
         context,
         MaterialPageRoute<void>(
-          builder: (context) => DesignScreen(user: user),
+          builder: (context) => Scaffold(
+            appBar: AppBar(
+              title: Text('${user.firstName} ${user.lastName}'),
+              centerTitle: true,
+            ),
+            body: SafeArea(
+              child: DesignScreen(user: user),
+            ),
+          ),
         ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(user?.firstName ?? ''),
-      ],
+    return SizedBox(
+      width: SizeConfig.width,
+      child: Column(
+        children: [
+          Text(user?.firstName ?? ''),
+        ],
+      ),
     );
   }
 }

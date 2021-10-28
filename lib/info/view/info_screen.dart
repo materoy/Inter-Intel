@@ -87,7 +87,7 @@ class _FormTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: SizeConfig.unitHeight * 2),
-      height: SizeConfig.unitHeight * 10,
+      height: SizeConfig.unitHeight * 15,
       child: TextFormField(
         key: key,
         onChanged: onChanged,
