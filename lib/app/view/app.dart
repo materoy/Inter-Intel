@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:inter_intel_interview/counter/counter.dart';
+import 'package:inter_intel_interview/info/view/info_screen.dart';
 import 'package:inter_intel_interview/l10n/l10n.dart';
 
 class App extends StatelessWidget {
@@ -22,12 +22,13 @@ class App extends StatelessWidget {
           accentColor: const Color(0xFF13B9FF),
         ),
       ),
+      darkTheme: ThemeData.dark(),
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const CounterPage(),
+      home: const InfoScreen(),
     );
   }
 }
