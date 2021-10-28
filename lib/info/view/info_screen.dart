@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:inter_intel_interview/app/utils/size_config.dart';
+import 'package:inter_intel_interview/design/design.dart';
 import 'package:inter_intel_interview/info/cubit/info_cubit.dart';
+import 'package:inter_intel_interview/info/info.dart';
 
 class InfoScreen extends StatelessWidget {
   const InfoScreen({Key? key}) : super(key: key);
@@ -30,11 +32,18 @@ class InfoForm extends StatelessWidget {
     return BlocListener<InfoCubit, InfoState>(
       listener: (context, state) {
         if (state.status.isSubmissionSuccess) {
-          Navigator.pop(context);
+          final user = User(
+              firstName: state.firstName,
+              lastName: state.lastName,
+              email: state.email.value,
+              phoneNumber: state.phoneNumber.value);
+
+          /// Navigates to the design screen
+          DesignScreen.route(context, user);
         } else if (state.status.isSubmissionFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
-            ..showSnackBar(const SnackBar(content: Text('Sign up failed')));
+            ..showSnackBar(const SnackBar(content: Text('Submisson failed')));
         }
       },
       child: Container(
@@ -150,14 +159,16 @@ class _PhoneNumberInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<InfoCubit, InfoState>(
-      buildWhen: (previous, current) => previous.email != current.email,
+      buildWhen: (previous, current) =>
+          previous.phoneNumber != current.phoneNumber,
       builder: (context, state) {
         return _FormTextField(
           key: const Key('infoForm_phoneNumberInput_textField'),
-          onChanged: (email) => context.read<InfoCubit>().emailChanged(email),
+          onChanged: (phoneNumber) =>
+              context.read<InfoCubit>().phoneNumberChanged(phoneNumber),
           keyboardType: TextInputType.emailAddress,
           labelText: 'Phone number',
-          errorText: state.email.invalid ? 'invalid email' : null,
+          errorText: state.phoneNumber.invalid ? 'invalid phone number' : null,
         );
       },
     );
@@ -175,6 +186,8 @@ class _SubmitButton extends StatelessWidget {
             : ElevatedButton(
                 key: const Key('infoForm_submit_raisedButton'),
                 style: ElevatedButton.styleFrom(
+                  minimumSize: Size(
+                      SizeConfig.unitWidth * 45, SizeConfig.unitHeight * 8),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
@@ -183,7 +196,12 @@ class _SubmitButton extends StatelessWidget {
                 onPressed: state.status.isValidated
                     ? () => context.read<InfoCubit>().submitForm()
                     : null,
-                child: const Text('SUBMIT'),
+                child: Text(
+                  'SUBMIT',
+                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                        color: state.status.isValidated ? null : Colors.grey,
+                      ),
+                ),
               );
       },
     );

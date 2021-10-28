@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
+import 'package:inter_intel_interview/info/info.dart';
 import 'package:inter_intel_interview/info/model/email.dart';
 import 'package:inter_intel_interview/info/model/phone_number.dart';
 import 'package:meta/meta.dart';
@@ -39,11 +40,12 @@ class InfoCubit extends Cubit<InfoState> {
     if (!state.status.isValidated) return;
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
-      // final mockUser = User(
-      //     firstName: state.firstName,
-      //     lastName: state.lastName,
-      //     email: state.email.value,
-      //     phone: 'phone');
+      final user = User(
+          firstName: state.firstName,
+          lastName: state.lastName,
+          email: state.email.value,
+          phoneNumber: state.phoneNumber.value);
+
       // await _authenticationRepository.signup(
       //     user: mockUser, password: state.password.value, image: state.image);
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
