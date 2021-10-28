@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inter_intel_interview/design/view/design_screen.dart';
@@ -15,6 +16,32 @@ class BaseScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
+          builder: (context, state) {
+            return Text(state.title);
+          },
+        ),
+        centerTitle: true,
+        leading: BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
+          builder: (context, state) {
+            /// Shows the back navigation button on the action bar
+            /// only when there is a back stack to navigate and not on homepage
+            if (state.backStack.isNotEmpty && state.screenIndex != 0) {
+              return IconButton(
+                icon: const Icon(CupertinoIcons.chevron_back),
+                onPressed: () {
+                  context.read<BottomNavBarCubit>().navigateToScreenIndex(
+                      state.screenIndex - 1,
+                      state.backStack.removeLast().title);
+                },
+              );
+            } else {
+              return const SizedBox();
+            }
+          },
+        ),
+      ),
       body: SafeArea(
         child: body ??
             BlocBuilder<BottomNavBarCubit, BottomNavBarState>(

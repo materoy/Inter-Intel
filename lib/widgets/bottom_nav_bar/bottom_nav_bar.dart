@@ -12,8 +12,9 @@ class BottomNavBar extends StatelessWidget {
         return BottomNavigationBar(
           items: items(),
           currentIndex: state.screenIndex,
-          onTap: (value) =>
-              context.read<BottomNavBarCubit>().navigateToScreenIndex(value),
+          onTap: (value) => context
+              .read<BottomNavBarCubit>()
+              .navigateToScreenIndex(value, items()[value].label!),
         );
       },
     );
