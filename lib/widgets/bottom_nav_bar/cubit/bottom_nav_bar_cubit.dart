@@ -8,9 +8,9 @@ class BottomNavBarCubit extends Cubit<BottomNavBarState> {
       : super(BottomNavBarState(
             0, 'Info', List<BottomNavBarState>.empty(growable: true)));
 
-  void navigateToScreenIndex(int index, String title) {
+  void navigateToScreenIndex(int index, String title,
+      {List<BottomNavBarState>? backStack}) {
     // Add current state to the back stack for back navigation
-    final backStack = state.backStack..add(state);
-    emit(BottomNavBarState(index, title, backStack));
+    emit(BottomNavBarState(index, title, backStack ?? state.backStack));
   }
 }

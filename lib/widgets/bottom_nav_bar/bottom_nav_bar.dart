@@ -12,9 +12,15 @@ class BottomNavBar extends StatelessWidget {
         return BottomNavigationBar(
           items: items(),
           currentIndex: state.screenIndex,
-          onTap: (value) => context
-              .read<BottomNavBarCubit>()
-              .navigateToScreenIndex(value, items()[value].label!),
+
+          /// Navigates to given screen and adds it's state to the back stack
+          onTap: (value) {
+            if (value != state.screenIndex) {
+              context.read<BottomNavBarCubit>().navigateToScreenIndex(
+                  value, items()[value].label!,
+                  backStack: state.backStack..add(state));
+            }
+          },
         );
       },
     );

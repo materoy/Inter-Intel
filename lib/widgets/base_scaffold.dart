@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +34,7 @@ class BaseScaffold extends StatelessWidget {
                 icon: const Icon(CupertinoIcons.chevron_back),
                 onPressed: () {
                   context.read<BottomNavBarCubit>().navigateToScreenIndex(
-                      state.screenIndex - 1,
+                      state.backStack.last.screenIndex,
                       state.backStack.removeLast().title);
                 },
               );
