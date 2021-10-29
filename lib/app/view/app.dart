@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:inter_intel_interview/app/theme/theme.dart';
 import 'package:inter_intel_interview/app/utils/size_config.dart';
 import 'package:inter_intel_interview/info/view/info_screen.dart';
 import 'package:inter_intel_interview/l10n/l10n.dart';
@@ -26,13 +27,8 @@ class App extends StatelessWidget {
         )
       ],
       child: MaterialApp(
-        theme: ThemeData(
-          appBarTheme: const AppBarTheme(color: Color(0xFF13B9FF)),
-          colorScheme: ColorScheme.fromSwatch(
-            accentColor: const Color(0xFF13B9FF),
-          ),
-        ),
-        darkTheme: ThemeData.dark(),
+        theme: lightTheme,
+        darkTheme: darkTheme,
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,

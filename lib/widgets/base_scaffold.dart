@@ -19,6 +19,7 @@ class BaseScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
         title: BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
           builder: (context, state) {
             return Text(state.title);

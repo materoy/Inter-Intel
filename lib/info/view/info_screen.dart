@@ -1,10 +1,18 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:get/get.dart';
 import 'package:inter_intel_interview/app/utils/size_config.dart';
 import 'package:inter_intel_interview/design/design.dart';
 import 'package:inter_intel_interview/info/cubit/info_cubit.dart';
 import 'package:inter_intel_interview/info/info.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
+
+part 'input_widgets.dart';
+part 'submit_button.dart';
 
 class InfoScreen extends StatelessWidget {
   const InfoScreen({Key? key}) : super(key: key);
@@ -44,10 +52,16 @@ class InfoForm extends StatelessWidget {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(const SnackBar(content: Text('Submisson failed')));
+        } else if (state.status.isInvalid) {
+          Get.snackbar<void>('Invalid', 'Please fill in all the form details');
         }
       },
       child: Container(
+        margin: EdgeInsets.only(top: SizeConfig.unitHeight * 5),
         padding: EdgeInsets.symmetric(horizontal: SizeConfig.unitWidth * 4),
+        decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(topLeft: Radius.circular(20)),
+            color: Theme.of(context).scaffoldBackgroundColor),
         child: Column(children: [
           Row(
             children: [
@@ -61,149 +75,6 @@ class InfoForm extends StatelessWidget {
           _SubmitButton(),
         ]),
       ),
-    );
-  }
-}
-
-class _FormTextField extends StatelessWidget {
-  const _FormTextField({
-    Key? key,
-    this.textFieldKey,
-    required this.onChanged,
-    required this.keyboardType,
-    required this.labelText,
-    this.errorText,
-    this.obscureText,
-  }) : super(key: key);
-
-  final Key? textFieldKey;
-  final Function(String) onChanged;
-  final TextInputType keyboardType;
-  final String labelText;
-  final String? errorText;
-  final bool? obscureText;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: SizeConfig.unitHeight * 2),
-      height: SizeConfig.unitHeight * 15,
-      child: TextFormField(
-        key: key,
-        onChanged: onChanged,
-        obscureText: obscureText ?? false,
-        keyboardType: keyboardType,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-          labelText: labelText,
-          errorText: errorText,
-        ),
-      ),
-    );
-  }
-}
-
-class _FirstNameInput extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<InfoCubit, InfoState>(
-      builder: (context, state) {
-        return _FormTextField(
-          key: const Key('infoForm_firstNameInput_textField'),
-          onChanged: (firstName) =>
-              context.read<InfoCubit>().firstNameChanged(firstName),
-          keyboardType: TextInputType.name,
-          labelText: 'First name',
-        );
-      },
-    );
-  }
-}
-
-class _LastNameInput extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<InfoCubit, InfoState>(
-      builder: (context, state) {
-        return _FormTextField(
-          key: const Key('infoForm_lastNameInput_textField'),
-          onChanged: (lastName) =>
-              context.read<InfoCubit>().lastNameChanged(lastName),
-          keyboardType: TextInputType.emailAddress,
-          labelText: 'Last name',
-        );
-      },
-    );
-  }
-}
-
-class _EmailInput extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<InfoCubit, InfoState>(
-      buildWhen: (previous, current) => previous.email != current.email,
-      builder: (context, state) {
-        return _FormTextField(
-          key: const Key('infoForm_emailInput_textField'),
-          onChanged: (email) => context.read<InfoCubit>().emailChanged(email),
-          keyboardType: TextInputType.emailAddress,
-          labelText: 'email',
-          errorText: state.email.invalid ? 'invalid email' : null,
-        );
-      },
-    );
-  }
-}
-
-class _PhoneNumberInput extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<InfoCubit, InfoState>(
-      buildWhen: (previous, current) =>
-          previous.phoneNumber != current.phoneNumber,
-      builder: (context, state) {
-        return _FormTextField(
-          key: const Key('infoForm_phoneNumberInput_textField'),
-          onChanged: (phoneNumber) =>
-              context.read<InfoCubit>().phoneNumberChanged(phoneNumber),
-          keyboardType: TextInputType.emailAddress,
-          labelText: 'Phone number',
-          errorText: state.phoneNumber.invalid ? 'invalid phone number' : null,
-        );
-      },
-    );
-  }
-}
-
-class _SubmitButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<InfoCubit, InfoState>(
-      buildWhen: (previous, current) => previous.status != current.status,
-      builder: (context, state) {
-        return state.status.isSubmissionInProgress
-            ? const CircularProgressIndicator()
-            : ElevatedButton(
-                key: const Key('infoForm_submit_raisedButton'),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(
-                      SizeConfig.unitWidth * 45, SizeConfig.unitHeight * 8),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  primary: Colors.orangeAccent,
-                ),
-                onPressed: state.status.isValidated
-                    ? () => context.read<InfoCubit>().submitForm()
-                    : null,
-                child: Text(
-                  'SUBMIT',
-                  style: Theme.of(context).textTheme.headline6!.copyWith(
-                        color: state.status.isValidated ? null : Colors.grey,
-                      ),
-                ),
-              );
-      },
     );
   }
 }

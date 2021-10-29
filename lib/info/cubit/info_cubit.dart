@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-import 'package:inter_intel_interview/info/info.dart';
 import 'package:inter_intel_interview/info/model/email.dart';
 import 'package:inter_intel_interview/info/model/phone_number.dart';
 import 'package:meta/meta.dart';
@@ -29,6 +28,10 @@ class InfoCubit extends Cubit<InfoState> {
         email: email, status: Formz.validate([email, state.phoneNumber])));
   }
 
+  void phoneCodeChanged(String value) {
+    // emit(state.copyWith(phoneNumber: int.pa)
+  }
+
   void phoneNumberChanged(String value) {
     final phoneNumber = Phone.dirty(value);
     emit(state.copyWith(
@@ -41,17 +44,6 @@ class InfoCubit extends Cubit<InfoState> {
       emit(state.copyWith(status: FormzStatus.submissionFailure));
       return;
     }
-
-    emit(state.copyWith(status: FormzStatus.submissionInProgress));
-
-    // final user = User(
-    //     firstName: state.firstName,
-    //     lastName: state.lastName,
-    //     email: state.email.value,
-    //     phoneNumber: state.phoneNumber.value);
-
-    /// A simulated network request delay
-    await Future<void>.delayed(const Duration(seconds: 2));
 
     emit(state.copyWith(status: FormzStatus.submissionSuccess));
   }

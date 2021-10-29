@@ -1,5 +1,8 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:inter_intel_interview/app/utils/size_config.dart';
 import 'package:inter_intel_interview/widgets/bottom_nav_bar/cubit/bottom_nav_bar_cubit.dart';
 
 class BottomNavBar extends StatelessWidget {
@@ -9,9 +12,12 @@ class BottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
       builder: (context, state) {
-        return BottomNavigationBar(
-          items: items(),
-          currentIndex: state.screenIndex,
+        return CurvedNavigationBar(
+          items: widgetItems(),
+          index: state.screenIndex,
+          height: SizeConfig.unitHeight * 6,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          color: Theme.of(context).bottomNavigationBarTheme.backgroundColor!,
 
           /// Navigates to given screen and adds it's state to the back stack
           onTap: (value) {
@@ -24,6 +30,15 @@ class BottomNavBar extends StatelessWidget {
         );
       },
     );
+  }
+
+  List<Widget> widgetItems() {
+    return const [
+      Icon(Icons.info_outline),
+      Icon(CupertinoIcons.person_alt_circle),
+      Icon(CupertinoIcons.text_badge_checkmark),
+      Icon(CupertinoIcons.sort_down_circle),
+    ];
   }
 
   List<BottomNavigationBarItem> items() {
