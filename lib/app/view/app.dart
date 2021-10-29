@@ -10,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:inter_intel_interview/app/theme/theme.dart';
 import 'package:inter_intel_interview/app/utils/size_config.dart';
-import 'package:inter_intel_interview/info/view/info_screen.dart';
 import 'package:inter_intel_interview/l10n/l10n.dart';
 import 'package:inter_intel_interview/widgets/base_scaffold.dart';
 import 'package:inter_intel_interview/widgets/bottom_nav_bar/cubit/bottom_nav_bar_cubit.dart';

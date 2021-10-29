@@ -10,18 +10,35 @@ class DesignScreen extends StatelessWidget {
   static void route(BuildContext context, User user) {
     Navigator.push(
         context,
-        MaterialPageRoute<void>(
-          builder: (context) => Scaffold(
-            appBar: AppBar(
-              elevation: 0,
-              title: const Text('Profile'),
-              centerTitle: true,
-            ),
-            body: SafeArea(
-              child: DesignScreen(user: user),
-            ),
-          ),
-        ));
+        PageRouteBuilder<void>(
+            pageBuilder: (context, animation, secondaryAnimation) {
+              return Scaffold(
+                  appBar: AppBar(
+                    elevation: 0,
+                    title: const Text('Profile'),
+                    centerTitle: true,
+                  ),
+                  body: SafeArea(
+                    child: DesignScreen(user: user),
+                  ));
+            },
+            transitionDuration: const Duration(milliseconds: 1500),
+            fullscreenDialog: true,
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return AnimatedScale(
+                duration: const Duration(milliseconds: 1000),
+                scale: animation.value,
+                curve: Curves.easeInOut,
+                child: AnimatedOpacity(
+                  duration: const Duration(seconds: 2),
+                  // opacity: animation.value,
+                  opacity: 1,
+                  child: child,
+                ),
+              );
+            },
+            reverseTransitionDuration: const Duration(seconds: 1)));
   }
 
   @override
@@ -30,8 +47,8 @@ class DesignScreen extends StatelessWidget {
       width: SizeConfig.width,
       child: Column(
         children: [
-          ProfileImage(),
-          Text(user?.firstName ?? ''),
+          const ProfileImage(),
+          Hero(tag: 'firstNameHero', child: Text(user?.firstName ?? '')),
         ],
       ),
     );
@@ -65,7 +82,7 @@ class _ProfileImageState extends State<ProfileImage>
   @override
   Widget build(BuildContext context) {
     return Transform.scale(
-        scale: sizeAnimation.value as double,
+        scale: 1,
         child: Container(
             clipBehavior: Clip.antiAlias,
             height: SizeConfig.unitHeight * 15,

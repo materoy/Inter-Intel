@@ -6,17 +6,25 @@ class _FormTextField extends StatelessWidget {
     this.textFieldKey,
     required this.onChanged,
     required this.keyboardType,
-    required this.labelText,
+    this.labelText,
+    this.hintText,
+    this.initialValue,
     this.errorText,
     this.obscureText,
+    this.maxLength,
+    this.floatingLabelBehavior = FloatingLabelBehavior.auto,
   }) : super(key: key);
 
   final Key? textFieldKey;
   final Function(String) onChanged;
   final TextInputType keyboardType;
-  final String labelText;
+  final String? initialValue;
+  final String? labelText;
   final String? errorText;
   final bool? obscureText;
+  final String? hintText;
+  final int? maxLength;
+  final FloatingLabelBehavior floatingLabelBehavior;
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +33,10 @@ class _FormTextField extends StatelessWidget {
       height: SizeConfig.unitHeight * 15,
       child: TextFormField(
         key: key,
+        initialValue: initialValue,
         onChanged: onChanged,
         obscureText: obscureText ?? false,
+        maxLength: maxLength,
         keyboardType: keyboardType,
         decoration: InputDecoration(
             border: OutlineInputBorder(
@@ -36,7 +46,10 @@ class _FormTextField extends StatelessWidget {
             filled: true,
             contentPadding: const EdgeInsets.only(left: 20),
             labelText: labelText,
+            hintText: hintText,
             errorText: errorText,
+            floatingLabelBehavior: floatingLabelBehavior,
+            counterText: '',
             labelStyle: Theme.of(context)
                 .textTheme
                 .bodyText2!
@@ -110,10 +123,13 @@ class _PhoneNumberInput extends StatelessWidget {
             Expanded(
               child: _FormTextField(
                 key: const Key('infoForm_codeInput_textField'),
-                onChanged: (phoneNumber) =>
-                    context.read<InfoCubit>().phoneNumberChanged(phoneNumber),
+                onChanged: (phoneCode) =>
+                    context.read<InfoCubit>().phoneCodeChanged(phoneCode),
                 keyboardType: TextInputType.phone,
-                labelText: 'code',
+                // labelText: 'code',
+                initialValue: '+',
+                maxLength: 5,
+                errorText: state.phoneCode.invalid ? 'invalid code' : null,
               ),
             ),
             SizedBox(width: SizeConfig.unitWidth * 3),

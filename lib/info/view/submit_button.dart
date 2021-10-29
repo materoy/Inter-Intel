@@ -33,7 +33,7 @@ class _SubmitButtonState extends State<_SubmitButton> {
             controller: _buttonController,
             onPressed: _submitButtonClick,
             resetAfterDuration: true,
-            resetDuration: const Duration(seconds: 3),
+            resetDuration: const Duration(seconds: 5),
             child: Text(
               'SUBMIT',
               style: Theme.of(context).textTheme.headline6!.copyWith(

@@ -20,7 +20,6 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         final todos = await todoRepository.loadTodos();
         emit(TodoLoadSuccess(todos));
       } catch (_) {
-        print(_);
         emit(TodoLoadFailure());
       }
     }

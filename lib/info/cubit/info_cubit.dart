@@ -13,30 +13,36 @@ class InfoCubit extends Cubit<InfoState> {
   void firstNameChanged(String value) {
     emit(state.copyWith(
         firstName: value,
-        status: Formz.validate([state.email, state.phoneNumber])));
+        status:
+            Formz.validate([state.email, state.phoneNumber, state.phoneCode])));
   }
 
   void lastNameChanged(String value) {
     emit(state.copyWith(
         lastName: value,
-        status: Formz.validate([state.email, state.phoneNumber])));
+        status:
+            Formz.validate([state.email, state.phoneNumber, state.phoneCode])));
   }
 
   void emailChanged(String value) {
     final email = Email.dirty(value);
     emit(state.copyWith(
-        email: email, status: Formz.validate([email, state.phoneNumber])));
+        email: email,
+        status: Formz.validate([email, state.phoneNumber, state.phoneCode])));
   }
 
   void phoneCodeChanged(String value) {
-    // emit(state.copyWith(phoneNumber: int.pa)
+    final phoneCode = PhoneCode.dirty(value);
+    emit(state.copyWith(
+        phoneCode: phoneCode,
+        status: Formz.validate([state.email, phoneCode, state.phoneNumber])));
   }
 
   void phoneNumberChanged(String value) {
     final phoneNumber = Phone.dirty(value);
     emit(state.copyWith(
         phoneNumber: phoneNumber,
-        status: Formz.validate([state.email, phoneNumber])));
+        status: Formz.validate([state.email, phoneNumber, state.phoneCode])));
   }
 
   Future<void> submitForm() async {
