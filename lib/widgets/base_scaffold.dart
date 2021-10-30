@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,7 +51,7 @@ class BaseScaffold extends StatelessWidget {
                 assert(state.screenIndex < screens().length);
                 assert(state.screenIndex >= 0);
 
-                return AnimatedScreen(body: screens()[state.screenIndex]);
+                return screens()[state.screenIndex];
               },
             ),
       ),
@@ -72,9 +70,11 @@ class BaseScaffold extends StatelessWidget {
 }
 
 class AnimatedScreen extends StatefulWidget {
-  const AnimatedScreen({Key? key, required this.body}) : super(key: key);
+  const AnimatedScreen({Key? key, required this.body, this.visible = false})
+      : super(key: key);
 
   final Widget body;
+  final bool visible;
 
   @override
   _AnimatedScreenState createState() => _AnimatedScreenState();
@@ -87,8 +87,8 @@ class _AnimatedScreenState extends State<AnimatedScreen>
   @override
   Widget build(BuildContext context) {
     return AnimatedOpacity(
-      duration: const Duration(seconds: 1),
-      opacity: 1,
+      duration: const Duration(seconds: 3),
+      opacity: widget.visible ? 1 : 0,
       child: widget.body,
     );
   }

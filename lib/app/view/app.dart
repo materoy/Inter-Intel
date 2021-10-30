@@ -27,7 +27,7 @@ class App extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: lightTheme,
-        darkTheme: darkTheme,
+        // darkTheme: darkTheme,
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
