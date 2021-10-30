@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inter_intel_interview/app/utils/size_config.dart';
 import 'package:inter_intel_interview/info/info.dart';
@@ -47,8 +48,34 @@ class DesignScreen extends StatelessWidget {
       width: SizeConfig.width,
       child: Column(
         children: [
-          const ProfileImage(),
-          Hero(tag: 'firstNameHero', child: Text(user?.firstName ?? '')),
+          Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: SizeConfig.unitWidth * 5,
+                vertical: SizeConfig.unitHeight * 2),
+            child: Row(
+              children: [
+                const ProfileImage(),
+                const Spacer(),
+                SizedBox(
+                  height: SizeConfig.unitHeight * 18,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${user?.firstName}  ${user?.lastName}',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      Text('${user?.email}'),
+                      Text('${user?.phoneNumber}'),
+                    ],
+                  ),
+                ),
+                const Spacer(),
+              ],
+            ),
+          ),
+          UserActivity(),
         ],
       ),
     );
@@ -84,9 +111,61 @@ class _ProfileImageState extends State<ProfileImage>
     return Transform.scale(
         scale: 1,
         child: Container(
-            clipBehavior: Clip.antiAlias,
-            height: SizeConfig.unitHeight * 15,
-            decoration: const BoxDecoration(shape: BoxShape.circle),
-            child: Image.network('https://thispersondoesnotexist.com/image')));
+          clipBehavior: Clip.antiAlias,
+          height: SizeConfig.unitHeight * 18,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: Theme.of(context).primaryColor,
+              width: 3,
+            ),
+          ),
+          child: Image.network(
+            'https://thispersondoesnotexist.com/image',
+            fit: BoxFit.cover,
+          ),
+        ));
+  }
+}
+
+class UserActivity extends StatefulWidget {
+  const UserActivity({Key? key}) : super(key: key);
+
+  @override
+  _UserActivityState createState() => _UserActivityState();
+}
+
+class _UserActivityState extends State<UserActivity> {
+  late int index;
+  @override
+  void initState() {
+    super.initState();
+    index = 0;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: CupertinoSegmentedControl(
+      children: {
+        0: segmentedControll('Posts'),
+        1: segmentedControll('Followers'),
+        2: segmentedControll('Following'),
+      },
+      groupValue: index,
+      padding: EdgeInsets.symmetric(vertical: SizeConfig.unitHeight * 2),
+      onValueChanged: (value) => setState(() {
+        index = value! as int;
+      }),
+    ));
+  }
+
+  Widget segmentedControll(String text) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: SizeConfig.unitWidth * 5,
+          vertical: SizeConfig.unitHeight * 1.5),
+      child: Text(text),
+    );
   }
 }

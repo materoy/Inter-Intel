@@ -45,7 +45,7 @@ class InfoForm extends StatelessWidget {
               firstName: state.firstName,
               lastName: state.lastName,
               email: state.email.value,
-              phoneNumber: state.phoneNumber.value);
+              phoneNumber: state.phoneCode.value + state.phoneNumber.value);
 
           /// Navigates to the design screen
           DesignScreen.route(context, user);

@@ -53,7 +53,7 @@ class BaseScaffold extends StatelessWidget {
                 assert(state.screenIndex < screens().length);
                 assert(state.screenIndex >= 0);
 
-                return screens()[state.screenIndex];
+                return AnimatedScreen(body: screens()[state.screenIndex]);
               },
             ),
       ),
@@ -68,5 +68,28 @@ class BaseScaffold extends StatelessWidget {
       ResponseScreen(),
       DictionaryScreen(),
     ];
+  }
+}
+
+class AnimatedScreen extends StatefulWidget {
+  const AnimatedScreen({Key? key, required this.body}) : super(key: key);
+
+  final Widget body;
+
+  @override
+  _AnimatedScreenState createState() => _AnimatedScreenState();
+}
+
+class _AnimatedScreenState extends State<AnimatedScreen>
+    with TickerProviderStateMixin {
+  late final AnimationController animationController;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedOpacity(
+      duration: const Duration(seconds: 1),
+      opacity: 1,
+      child: widget.body,
+    );
   }
 }

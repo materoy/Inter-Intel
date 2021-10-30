@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:inter_intel_interview/app/utils/size_config.dart';
 
 const dictionary = {
   '34': 'thirty-four',
@@ -69,10 +70,25 @@ class _DictionaryScreenState extends State<DictionaryScreen> {
     return ListView.builder(
       itemCount: sortedDictionary.length,
       itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(sortedDictionary.entries.toList()[index].key.toString()),
-          subtitle:
+        return Container(
+          margin: EdgeInsets.symmetric(
+              horizontal: SizeConfig.unitWidth * 5,
+              vertical: SizeConfig.unitHeight * 1),
+          padding: EdgeInsets.symmetric(
+              horizontal: SizeConfig.unitWidth * 5,
+              vertical: SizeConfig.unitHeight * 1),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: Theme.of(context).primaryColor.withOpacity(.1)),
+          child: Row(
+            children: [
+              const Spacer(),
+              Text(sortedDictionary.entries.toList()[index].key.toString()),
+              const Spacer(flex: 2),
               Text(sortedDictionary.entries.toList()[index].value.toString()),
+              const Spacer()
+            ],
+          ),
         );
       },
     );
