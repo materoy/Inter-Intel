@@ -51,10 +51,10 @@ jobs:
         run: flutter pub get
 
       - name: Build APK
-        run: flutter build apk --flavor production --target lib/main_production.dart  --split-per-abi --release
+        run: flutter build apk --flavor production --target lib/main_production.dart  --split-per-abi --debug
 
-      - name: Build APPBUNDLE
-        run: flutter build appbundle --release
+      # - name: Build APPBUNDLE
+      #   run: flutter build appbundle --release
 
       - name: Create Github Release
         uses: ncipollo/release-action@v1
