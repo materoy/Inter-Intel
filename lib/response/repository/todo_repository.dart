@@ -12,6 +12,7 @@ class TodoRepository {
   }
   late final Dio dio;
 
+  // ignore: constant_identifier_names
   static const URL = 'https://jsonplaceholder.typicode.com/todos';
 
   Future<List<Todo>> loadTodos([int limit = 5]) async {

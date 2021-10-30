@@ -75,7 +75,7 @@ class DesignScreen extends StatelessWidget {
               ],
             ),
           ),
-          UserActivity(),
+          const UserActivity(),
         ],
       ),
     );
@@ -101,7 +101,7 @@ class _ProfileImageState extends State<ProfileImage>
     controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 2));
 
-    sizeAnimation = Tween(begin: 0.0, end: 1.0).animate(controller);
+    sizeAnimation = Tween(begin: 0, end: 1.0).animate(controller);
     colorAnimation =
         ColorTween(begin: Colors.green, end: Colors.purple).animate(controller);
   }
@@ -145,8 +145,7 @@ class _UserActivityState extends State<UserActivity> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: CupertinoSegmentedControl(
+    return CupertinoSegmentedControl(
       children: {
         0: segmentedControll('Posts'),
         1: segmentedControll('Followers'),
@@ -157,7 +156,7 @@ class _UserActivityState extends State<UserActivity> {
       onValueChanged: (value) => setState(() {
         index = value! as int;
       }),
-    ));
+    );
   }
 
   Widget segmentedControll(String text) {
