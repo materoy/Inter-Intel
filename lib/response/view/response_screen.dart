@@ -14,13 +14,13 @@ class ResponseScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           TodoBloc(todoRepository: TodoRepository())..add(TodosLoaded()),
-      child: const _ResponseView(),
+      child: const ResponseView(),
     );
   }
 }
 
-class _ResponseView extends StatelessWidget {
-  const _ResponseView({Key? key}) : super(key: key);
+class ResponseView extends StatelessWidget {
+  const ResponseView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -7,9 +7,9 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:inter_intel_interview/app/app.dart';
-import 'package:inter_intel_interview/counter/counter.dart';
 import 'package:inter_intel_interview/info/view/info_screen.dart';
 import 'package:inter_intel_interview/widgets/base_scaffold.dart';
+import 'package:inter_intel_interview/widgets/bottom_nav_bar/bottom_nav_bar.dart';
 
 void main() {
   group('App', () {
@@ -21,6 +21,11 @@ void main() {
     testWidgets('renders Info screen', (tester) async {
       await tester.pumpWidget(const App());
       expect(find.byType(InfoScreen), findsOneWidget);
+    });
+
+    testWidgets('renders bottom navigation bar', (tester) async {
+      await tester.pumpWidget(const App());
+      expect(find.byType(BottomNavBar), findsOneWidget);
     });
   });
 }
