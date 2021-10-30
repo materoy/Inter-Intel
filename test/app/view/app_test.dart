@@ -8,12 +8,19 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:inter_intel_interview/app/app.dart';
 import 'package:inter_intel_interview/counter/counter.dart';
+import 'package:inter_intel_interview/info/view/info_screen.dart';
+import 'package:inter_intel_interview/widgets/base_scaffold.dart';
 
 void main() {
   group('App', () {
-    testWidgets('renders CounterPage', (tester) async {
+    testWidgets('renders Base scaffold', (tester) async {
       await tester.pumpWidget(const App());
-      expect(find.byType(CounterPage), findsOneWidget);
+      expect(find.byType(BaseScaffold), findsOneWidget);
+    });
+
+    testWidgets('renders Info screen', (tester) async {
+      await tester.pumpWidget(const App());
+      expect(find.byType(InfoScreen), findsOneWidget);
     });
   });
 }
