@@ -1,6 +1,10 @@
+// ignore_for_file: lines_longer_than_80_chars, prefer_int_literals
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:inter_intel_interview/app/utils/size_config.dart';
+import 'package:inter_intel_interview/design/bloc/user_bloc.dart';
 import 'package:inter_intel_interview/info/info.dart';
 
 class DesignScreen extends StatelessWidget {
@@ -23,12 +27,12 @@ class DesignScreen extends StatelessWidget {
                     child: DesignScreen(user: user),
                   ));
             },
-            transitionDuration: const Duration(milliseconds: 1500),
+            transitionDuration: const Duration(milliseconds: 1000),
             fullscreenDialog: true,
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               return AnimatedScale(
-                duration: const Duration(milliseconds: 1000),
+                duration: const Duration(milliseconds: 500),
                 scale: animation.value,
                 curve: Curves.easeInOut,
                 child: AnimatedOpacity(
@@ -44,46 +48,81 @@ class DesignScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: SizeConfig.width,
-      child: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: SizeConfig.unitWidth * 5,
-                vertical: SizeConfig.unitHeight * 2),
-            child: Row(
-              children: [
-                const ProfileImage(),
-                const Spacer(),
-                SizedBox(
-                  height: SizeConfig.unitHeight * 18,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${user?.firstName}  ${user?.lastName}',
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      Text('${user?.email}'),
-                      Text('${user?.phoneNumber}'),
-                    ],
-                  ),
-                ),
-                const Spacer(),
-              ],
-            ),
-          ),
-          const UserActivity(),
-        ],
-      ),
+    return BlocProvider<UserBloc>(
+      create: (context) => UserBloc()..add(UserLoaded()),
+      child: DesignView(user: user),
     );
   }
 }
 
+class DesignView extends StatelessWidget {
+  const DesignView({Key? key, this.user}) : super(key: key);
+  final User? user;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        width: SizeConfig.width,
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.unitWidth * 5,
+                  vertical: SizeConfig.unitHeight * 2),
+              child: Row(
+                children: [
+                  if (user == null)
+                    const ProfileImage(
+                        url: 'https://thispersondoesnotexist.com/image')
+                  else
+                    BlocBuilder<UserBloc, UserState>(
+                      builder: (context, state) =>
+                          ProfileImage(url: state.user.picture),
+                    ),
+                  const Spacer(),
+                  SizedBox(
+                    height: SizeConfig.unitHeight * 18,
+                    child: BlocBuilder<UserBloc, UserState>(
+                      builder: (context, state) {
+                        return TweenAnimationBuilder<double>(
+                            duration: const Duration(milliseconds: 1000),
+                            tween: Tween(begin: 0.0, end: 1.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${user?.firstName ?? state.user.firstName}  ${user?.lastName ?? state.user.lastName}',
+                                  style: Theme.of(context).textTheme.headline6,
+                                ),
+                                Text(user?.email ?? state.user.email),
+                                Text(user?.phoneNumber ??
+                                    state.user.phoneNumber),
+                              ],
+                            ),
+                            builder: (context, animation, child) {
+                              return Opacity(
+                                opacity: animation,
+                                child: child,
+                              );
+                            });
+                      },
+                    ),
+                  ),
+                  const Spacer(),
+                ],
+              ),
+            ),
+            const UserActivity(),
+          ],
+        ));
+  }
+}
+
 class ProfileImage extends StatefulWidget {
-  const ProfileImage({Key? key}) : super(key: key);
+  const ProfileImage({Key? key, required this.url}) : super(key: key);
+
+  final String url;
 
   @override
   _ProfileImageState createState() => _ProfileImageState();
@@ -99,32 +138,35 @@ class _ProfileImageState extends State<ProfileImage>
   void initState() {
     super.initState();
     controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 2));
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
 
-    sizeAnimation = Tween(begin: 0, end: 1.0).animate(controller);
-    colorAnimation =
-        ColorTween(begin: Colors.green, end: Colors.purple).animate(controller);
+    sizeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(controller);
+
+    controller.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Transform.scale(
-        scale: 1,
+    return TweenAnimationBuilder<double>(
+        tween: Tween(begin: 0.0, end: 1.0),
+        duration: const Duration(milliseconds: 500),
         child: Container(
-          clipBehavior: Clip.antiAlias,
+          clipBehavior: Clip.hardEdge,
           height: SizeConfig.unitHeight * 18,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(
-              color: Theme.of(context).primaryColor,
-              width: 3,
-            ),
           ),
           child: Image.network(
-            'https://thispersondoesnotexist.com/image',
+            widget.url,
             fit: BoxFit.cover,
           ),
-        ));
+        ),
+        builder: (context, animation, child) {
+          return AnimatedOpacity(
+              opacity: animation,
+              duration: const Duration(seconds: 1),
+              child: child);
+        });
   }
 }
 
