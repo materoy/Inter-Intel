@@ -43,5 +43,5 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-          
-        run: flutter build apk --flavor production --target lib/main_production.dart 
+
+        # run: flutter build apk --flavor production --target lib/main_production.dart 
