@@ -45,13 +45,13 @@ jobs:
         run: echo "${{ secrets.KEYPROP_PROD }}" | base64 --decode > android/key.properties
 
       - name: Decoding android/neumodore_key.jks
-        run: echo "${{ secrets.KEYJKS_PROD }}" | base64 --decode > android/key.jks
+        run: echo "${{ secrets.KEYJKS_PROD }}" | base64 --decode > android/app/key.jks
 
       - name: Pub Get Packages
         run: flutter pub get
 
       - name: Build APK
-        run: flutter build apk --flavor production --target lib/main_production.dart  --split-per-abi --debug
+        run: flutter build apk --flavor production --target lib/main_production.dart  --split-per-abi --release
 
       # - name: Build APPBUNDLE
       #   run: flutter build appbundle --release
