@@ -1,8 +1,11 @@
 // ignore_for_file: lines_longer_than_80_chars, prefer_int_literals
 
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:inter_intel_interview/app/utils/size_config.dart';
 import 'package:inter_intel_interview/design/bloc/user_bloc.dart';
 import 'package:inter_intel_interview/info/info.dart';
@@ -61,61 +64,126 @@ class DesignView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: SizeConfig.width,
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.unitWidth * 5,
-                  vertical: SizeConfig.unitHeight * 2),
-              child: Row(
-                children: [
-                  if (user == null)
-                    const ProfileImage(
-                        url: 'https://thispersondoesnotexist.com/image')
-                  else
-                    BlocBuilder<UserBloc, UserState>(
-                      builder: (context, state) =>
-                          ProfileImage(url: state.user.picture),
-                    ),
-                  const Spacer(),
-                  SizedBox(
-                    height: SizeConfig.unitHeight * 18,
-                    child: BlocBuilder<UserBloc, UserState>(
-                      builder: (context, state) {
-                        return TweenAnimationBuilder<double>(
-                            duration: const Duration(milliseconds: 1000),
-                            tween: Tween(begin: 0.0, end: 1.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '${user?.firstName ?? state.user.firstName}  ${user?.lastName ?? state.user.lastName}',
-                                  style: Theme.of(context).textTheme.headline6,
-                                ),
-                                Text(user?.email ?? state.user.email),
-                                Text(user?.phoneNumber ??
-                                    state.user.phoneNumber),
-                              ],
-                            ),
-                            builder: (context, animation, child) {
-                              return Opacity(
-                                opacity: animation,
-                                child: child,
-                              );
-                            });
-                      },
+    return Column(
+      children: [
+        SizedBox(
+          height: SizeConfig.unitHeight * 40,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Positioned(
+                top: 0,
+                child: Container(
+                  alignment: Alignment.topCenter,
+                  height: SizeConfig.unitHeight * 20,
+                  clipBehavior: Clip.antiAlias,
+                  decoration: const BoxDecoration(
+                      borderRadius:
+                          BorderRadius.vertical(bottom: Radius.circular(20))),
+                  child: Opacity(
+                    opacity: .5,
+                    child: Image.network(
+                      // 'https://picsum.photos/seed/${Random().nextInt(1000)}/${(SizeConfig.width).toInt()}/${(SizeConfig.unitHeight * 20).toInt()}',
+                      'https://picsum.photos/${(SizeConfig.width).toInt()}/${(SizeConfig.unitHeight * 20).toInt()}',
+                      key: UniqueKey(),
                     ),
                   ),
-                  const Spacer(),
-                ],
+                ),
               ),
-            ),
-            const UserActivity(),
-          ],
-        ));
+              Positioned(
+                top: SizeConfig.unitHeight * 10,
+                child: Column(
+                  children: [
+                    if (user == null)
+                      const ProfileImage(
+                          url: 'https://thispersondoesnotexist.com/image')
+                    else
+                      BlocBuilder<UserBloc, UserState>(
+                        builder: (context, state) =>
+                            ProfileImage(url: state.user.picture),
+                      ),
+                    SizedBox(
+                      height: SizeConfig.unitHeight * 12,
+                      child: BlocBuilder<UserBloc, UserState>(
+                        builder: (context, state) {
+                          return TweenAnimationBuilder<double>(
+                              duration: const Duration(milliseconds: 1000),
+                              tween: Tween(begin: 0.0, end: 1.0),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(
+                                    '${user?.firstName ?? state.user.firstName}  ${user?.lastName ?? state.user.lastName}',
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  ),
+                                  Text(user?.email ?? state.user.email,
+                                      style: GoogleFonts.amiri(
+                                          color: Colors.blue)),
+                                  Text(user?.phoneNumber ??
+                                      state.user.phoneNumber),
+                                ],
+                              ),
+                              builder: (context, animation, child) {
+                                return Opacity(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                  top: SizeConfig.unitHeight * 30,
+                  right: SizeConfig.unitWidth * 5,
+                  child: IconButton(
+                      onPressed: () {},
+                      icon: const Icon(CupertinoIcons.settings)))
+            ],
+          ),
+        ),
+        const UserStats(),
+        const Stories(),
+      ],
+    );
+  }
+}
+
+class UserStats extends StatelessWidget {
+  const UserStats({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: SizeConfig.unitHeight * 2),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _statView('posts', 18),
+          _statView('followers', 200),
+          _statView('following', 800),
+        ],
+      ),
+    );
+  }
+
+  Widget _statView(String title, int value) {
+    return Column(
+      children: [
+        Text(
+          value.toString(),
+          style: GoogleFonts.robotoMono(color: Colors.purple),
+        ),
+        Text(
+          title,
+          style: GoogleFonts.robotoSlab(),
+        ),
+      ],
+    );
   }
 }
 
@@ -170,43 +238,63 @@ class _ProfileImageState extends State<ProfileImage>
   }
 }
 
-class UserActivity extends StatefulWidget {
-  const UserActivity({Key? key}) : super(key: key);
+class Stories extends StatefulWidget {
+  const Stories({Key? key}) : super(key: key);
 
   @override
-  _UserActivityState createState() => _UserActivityState();
+  _StoriesState createState() => _StoriesState();
 }
 
-class _UserActivityState extends State<UserActivity> {
-  late int index;
-  @override
-  void initState() {
-    super.initState();
-    index = 0;
-  }
-
+class _StoriesState extends State<Stories> {
   @override
   Widget build(BuildContext context) {
-    return CupertinoSegmentedControl(
-      children: {
-        0: segmentedControll('Posts'),
-        1: segmentedControll('Followers'),
-        2: segmentedControll('Following'),
-      },
-      groupValue: index,
-      padding: EdgeInsets.symmetric(vertical: SizeConfig.unitHeight * 2),
-      onValueChanged: (value) => setState(() {
-        index = value! as int;
-      }),
-    );
-  }
-
-  Widget segmentedControll(String text) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: SizeConfig.unitWidth * 5,
-          vertical: SizeConfig.unitHeight * 1.5),
-      child: Text(text),
+    return Column(
+      children: [
+        Row(
+          children: [
+            const Spacer(),
+            Text(
+              'stories',
+              style:
+                  GoogleFonts.play(fontSize: 18, fontWeight: FontWeight.w700),
+            ),
+            const Spacer(flex: 10),
+            Text('See All',
+                style: GoogleFonts.robotoCondensed(color: Colors.blue)),
+            const Icon(CupertinoIcons.chevron_right),
+            const Spacer(),
+          ],
+        ),
+        SizedBox(
+          height: SizeConfig.unitHeight * 30,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: 4,
+            padding: const EdgeInsets.only(left: 20),
+            itemBuilder: (context, index) {
+              return Container(
+                clipBehavior: Clip.antiAlias,
+                margin: EdgeInsets.symmetric(
+                    horizontal: SizeConfig.unitWidth * 3,
+                    vertical: SizeConfig.unitHeight * 2),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: TweenAnimationBuilder<double>(
+                    duration: const Duration(seconds: 2),
+                    tween: Tween(begin: 0.0, end: 1.0),
+                    child: Image.network(
+                      'https://picsum.photos/seed/${Random().nextInt(1000)}/${(SizeConfig.unitWidth * 45).toInt()}/${(SizeConfig.unitHeight * 27).toInt()}',
+                      key: UniqueKey(),
+                    ),
+                    builder: (context, animation, child) {
+                      return Opacity(opacity: animation, child: child);
+                    }),
+              );
+            },
+          ),
+        )
+      ],
     );
   }
 }

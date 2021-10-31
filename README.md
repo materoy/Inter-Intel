@@ -9,6 +9,17 @@ My Solution at Inter intel interview for junior software engineer
  - [Flutter](https://flutter.dev)
  - [Very Good CLI](https://github.com/VeryGoodOpenSource/very_good_cli)
  - [Bloc library](https://bloclibrary.dev)
+
+
+## Concepts 
+    - Material design
+    - Clean architecture
+    - Algorithms
+    - Testing
+    - UI/UX
+    - State management
+    - CI/CD with Github workflows
+
 ## Badges
 
 
@@ -49,18 +60,10 @@ $ flutter run --flavor staging --target lib/main_staging.dart
 $ flutter run --flavor production --target lib/main_production.dart
 ```
 
-_\*Inter Intel Interview works on iOS, Android, and Web._
+_\*Inter Intel Interview works on iOS, Android ._
 
 ---
 
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
-
-  
-## Screenshots
-
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
 
   
   
@@ -84,3 +87,27 @@ $ open coverage/index.html
 
 ---
     
+
+## License
+
+MIT License
+
+Copyright (c) 2021 Roy M
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
